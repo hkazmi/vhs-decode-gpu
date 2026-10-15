@@ -61,7 +61,8 @@ def gpu_available():
 # Mirrors unwrap_hilbert in src/lib.rs, including its float32 atan2
 # approximation, so the GPU and CPU demodulators agree closely.
 _UNWRAP_SRC = r"""
-#include <cuda/std/cfloat>
+// FLT_MIN, defined here rather than included so NVRTC needs no system headers
+#define VHSD_FLT_MIN 1.17549435e-38f
 
 __device__ __forceinline__ float atan_approx(float x) {
     const float A1 = 0.99997726f, A3 = -0.33262347f, A5 = 0.19354346f;
@@ -73,7 +74,7 @@ __device__ __forceinline__ float atan_approx(float x) {
 __device__ __forceinline__ float atan2f_fast(float y, float x) {
     const float PI = 3.14159265358979323846f;
     const float HALF_PI = 1.57079632679489661923f;
-    x = x + copysignf(FLT_MIN, x);
+    x = x + copysignf(VHSD_FLT_MIN, x);
     bool swap = fabsf(x) < fabsf(y);
     float in = (swap ? x : y) / (swap ? y : x);
     float res = atan_approx(in);

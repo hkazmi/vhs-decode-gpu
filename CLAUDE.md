@@ -16,7 +16,8 @@ Fork of vhs-decode (`hkazmi/vhs-decode-gpu`) aimed at making decoding faster, in
 
 ## Running
 
-- **Sample:** `SDRconnect_20261014_162807.s16` is an untracked PAL VHS capture, 20 MSPS, about 8 s, 203 frames. It was converted from an SDRconnect I/Q WAV with centre frequency 3.45 MHz.
+- **Sample:** `SDRconnect_20261014_162807.s16` is an untracked PAL VHS capture, 20 MSPS, about 8 s, 203 frames. It was converted from an SDRconnect I/Q WAV (SDRPlay RSP1B, centre frequency 3.45 MHz) with `tools/iq_to_s16.py`, which reads the centre frequency from the file name.
+- **Windows:** to build and run natively, without WSL, see `WINDOWS_INSTRUCTIONS.md`.
 - **Decode:**
   ```
   .venv/bin/vhs-decode --pal --tf vhs -f 20 [--no_resample] [--gpu] --threads 4 SDRconnect_20261014_162807.s16 out/name
